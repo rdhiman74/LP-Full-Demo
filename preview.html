@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LaunchPath AI — See It In Action</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#020617;
+  --card:#0b1220;
+  --border:#1f2937;
+  --cyan:#22d3ee;
+  --blue:#38bdf8;
+  --green:#22c55e;
+  --amber:#fbbf24;
+  --red:#f87171;
+  --text:#f9fafb;
+  --muted:#9ca3af;
+  --sub:#cbd5f5;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── MINIMAL NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;
+  background:rgba(2,6,23,.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.orb{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 30% 20%,#22d3ee 0,#0ea5e9 35%,#2d1b69 70%,#020617 100%);
+  box-shadow:0 0 0 1px rgba(34,211,238,.4),0 0 16px rgba(34,211,238,.2);
+  animation:orbP 3s ease-in-out infinite;
+}
+@keyframes orbP{0%,100%{box-shadow:0 0 0 1px rgba(34,211,238,.4),0 0 16px rgba(34,211,238,.15);}50%{box-shadow:0 0 0 1px rgba(34,211,238,.7),0 0 28px rgba(34,211,238,.35);}}
+.brand-name{font-size:15px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text);}
+.nav-cta{
+  padding:9px 20px;border-radius:999px;
+  background:linear-gradient(135deg,#22d3ee,#38bdf8);
+  color:#04131f;font-weight:700;font-size:13px;
+  text-decoration:none;transition:filter .15s,transform .1s;
+}
+.nav-cta:hover{filter:brightness(1.08);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{
+  padding:120px 32px 60px;
+  text-align:center;
+  max-width:700px;margin:0 auto;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cyan);background:rgba(34,211,238,.06);
+  border:1px solid rgba(34,211,238,.2);
+  padding:6px 14px;border-radius:999px;margin-bottom:20px;
+}
+.hero-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(32px,5vw,56px);
+  line-height:1.08;letter-spacing:-.02em;
+  margin-bottom:16px;
+}
+.hero-title em{font-style:italic;color:var(--cyan);}
+.hero-sub{
+  font-size:16px;color:var(--sub);line-height:1.7;
+  margin-bottom:10px;
+}
+.hero-note{font-size:12px;color:var(--muted);}
+
+/* ── SECTION ── */
+.section{
+  max-width:960px;margin:0 auto;
+  padding:0 24px 80px;
+}
+.section-label{
+  display:flex;align-items:center;gap:12px;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cyan);font-weight:700;margin-bottom:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(34,211,238,.15);}
+.section-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(24px,3.5vw,38px);
+  line-height:1.1;margin-bottom:6px;
+}
+.section-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+
+/* ── MOCK CHROME ── */
+.mock{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);
+  position:relative;
+}
+.mock-bar{
+  background:#111827;padding:10px 16px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.dot{width:10px;height:10px;border-radius:50%;}
+.mock-title{font-size:11px;color:var(--muted);letter-spacing:.06em;flex:1;text-align:center;}
+.mock-body{padding:18px;}
+
+/* ── ESSAY SECTION ── */
+.essay-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;}
+@media(max-width:680px){.essay-grid{grid-template-columns:1fr;}}
+
+.essay-textarea{
+  border-radius:14px;border:1px solid var(--border);
+  background:#0a1628;padding:14px;
+  font-size:12px;line-height:1.65;
+  color:var(--sub);font-family:'DM Sans',monospace;
+  min-height:180px;position:relative;overflow:hidden;
+}
+.essay-textarea mark{
+  background:transparent;border-radius:4px;padding:1px 2px;
+  cursor:default;
+}
+mark.sev-warn{background:rgba(248,113,113,.15);border-bottom:2px solid rgba(248,113,113,.6);color:inherit;}
+mark.sev-amber{background:rgba(251,191,36,.1);border-bottom:2px solid rgba(251,191,36,.5);color:inherit;}
+
+.score-bar-wrap{margin-top:10px;}
+.score-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
+.score-track{height:5px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;}
+.score-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--blue));width:0%;transition:width .05s linear;}
+
+.issue-list{display:flex;flex-direction:column;gap:7px;}
+.issue-item{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:9px 11px;border-radius:11px;
+  opacity:0;transform:translateX(12px);
+  transition:opacity .35s ease,transform .35s ease;
+}
+.issue-item.show{opacity:1;transform:translateX(0);}
+.issue-item.warn{border:1px solid rgba(248,113,113,.3);background:rgba(248,113,113,.04);}
+.issue-item.amber{border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.04);}
+.pill{padding:2px 7px;border-radius:999px;font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0;margin-top:2px;}
+.pill.warn{background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#fca5a5;}
+.pill.amber{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#fde68a;}
+.issue-type{font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:1px;}
+.issue-why{font-size:11px;color:var(--sub);line-height:1.4;}
+
+.score-hero{text-align:center;padding:16px;background:rgba(255,255,255,.02);border-radius:14px;border:1px solid var(--border);margin-bottom:12px;}
+.score-big{
+  font-size:56px;font-weight:800;letter-spacing:-.05em;lineheight:1;
+  background:linear-gradient(180deg,#fff 0%,var(--cyan) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.score-label{font-size:11px;color:var(--muted);margin-top:4px;}
+.score-delta{font-size:13px;font-weight:700;color:#86efac;margin-top:6px;}
+
+/* ── COLLEGE MATCH ── */
+.cm-inputs{display:flex;gap:10px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;}
+.cm-field label{font-size:11px;color:var(--sub);font-weight:600;display:block;margin-bottom:5px;}
+.cm-input{
+  padding:9px 14px;border-radius:10px;
+  border:1px solid rgba(34,211,238,.4);
+  background:#0a1628;color:var(--cyan);
+  font-size:14px;font-weight:700;
+  font-family:'DM Sans',sans-serif;
+  outline:none;width:90px;
+}
+.cm-btn{
+  padding:9px 18px;border-radius:10px;
+  background:linear-gradient(135deg,#22d3ee,#3b82f6);
+  color:#04111f;font-weight:700;font-size:12px;
+  border:none;cursor:default;font-family:'DM Sans',sans-serif;
+  opacity:.5;
+}
+.cm-btn.active{opacity:1;cursor:pointer;transition:filter .15s;}
+.cm-btn.active:hover{filter:brightness(1.08);}
+
+.college-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:600px){.college-cards{grid-template-columns:1fr;}}
+.c-card{
+  border-radius:14px;padding:14px 15px;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .4s ease,transform .4s ease;
+}
+.c-card.show{opacity:1;transform:translateY(0);}
+.c-card.safety{border:1px solid rgba(34,197,94,.3);background:rgba(34,197,94,.05);}
+.c-card.target{border:1px solid rgba(250,204,21,.3);background:rgba(250,204,21,.05);}
+.c-card.reach{border:1px solid rgba(248,113,113,.3);background:rgba(248,113,113,.05);}
+.c-tag{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.c-tag.safety{color:#86efac;}.c-tag.target{color:#fde68a;}.c-tag.reach{color:#fca5a5;}
+.c-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+.c-stat{font-size:11px;color:var(--muted);line-height:1.4;}
+.c-fit{display:inline-flex;align-items:center;gap:3px;margin-top:6px;padding:2px 8px;border-radius:999px;font-size:9px;font-weight:700;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);color:var(--cyan);}
+
+/* ── GATE OVERLAY ── */
+.gate{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;
+  padding-bottom:28px;
+  background:linear-gradient(to bottom,transparent 0%,rgba(2,6,23,.7) 40%,rgba(2,6,23,.97) 75%);
+  border-radius:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity .6s ease;
+  z-index:10;
+}
+.gate.show{opacity:1;pointer-events:auto;}
+.gate-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;text-align:center;}
+.gate-sub{font-size:13px;color:var(--sub);text-align:center;margin-bottom:18px;max-width:320px;line-height:1.55;}
+.gate-btn{
+  padding:12px 28px;border-radius:999px;
+  background:linear-gradient(135deg,#22d3ee,#38bdf8);
+  color:#04111f;font-weight:700;font-size:14px;
+  text-decoration:none;
+  box-shadow:0 8px 28px rgba(34,211,238,.3);
+  transition:filter .15s,transform .1s;
+}
+.gate-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.gate-note{font-size:11px;color:var(--muted);margin-top:10px;}
+
+.replace-btn{
+  margin-top:6px;padding:4px 10px;border-radius:999px;
+  border:1px solid rgba(34,211,238,.35);
+  background:rgba(34,211,238,.08);
+  color:#a5f3fc;font-size:9px;font-weight:700;
+  cursor:default;font-family:'DM Sans',sans-serif;
+  letter-spacing:.04em;transition:all .2s;
+  display:inline-block;
+}
+.replace-btn.replaced{
+  background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);
+  color:#86efac;
+}
+.step2-btn{
+  padding:7px 14px;border-radius:10px;font-size:11px;font-weight:700;
+  cursor:default;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);color:var(--muted);
+  transition:all .4s;font-family:'DM Sans',sans-serif;
+}
+.step2-btn.ready{
+  background:linear-gradient(135deg,#22d3ee,#3b82f6);
+  border-color:rgba(34,211,238,.6);color:#04111f;
+  box-shadow:0 0 20px rgba(34,211,238,.3);
+  cursor:default;
+}
+.step2-btn.clicking{transform:scale(.96);opacity:.7;}
+
+/* ── DIVIDER ── */
+.divider{
+  max-width:960px;margin:0 auto 64px;
+  padding:0 24px;
+  display:flex;align-items:center;gap:16px;
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider span{font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
+
+/* ── FOOTER STRIP ── */
+.footer-strip{
+  text-align:center;padding:40px 24px 60px;
+  border-top:1px solid var(--border);
+}
+.footer-strip p{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.footer-cta{
+  display:inline-flex;padding:13px 32px;border-radius:999px;
+  background:linear-gradient(135deg,#22d3ee,#38bdf8);
+  color:#04111f;font-weight:700;font-size:15px;
+  text-decoration:none;
+  box-shadow:0 8px 32px rgba(34,211,238,.25);
+  transition:filter .15s,transform .1s;
+}
+.footer-cta:hover{filter:brightness(1.08);transform:translateY(-1px);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="brand">
+    <div class="orb"></div>
+    <span class="brand-name">LaunchPath AI</span>
+  </a>
+  <a href="student-profile.html" class="nav-cta">Create Account →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">✦ Live Preview — No Account Needed</div>
+  <h1 class="hero-title">See LaunchPath AI<br/><em>working on real data.</em></h1>
+  <p class="hero-sub">Watch the Essay Studio audit a real college essay and find exactly what admissions readers flag. Then see College Match build a balanced list for a 3.4 GPA / 1320 SAT student.</p>
+  <p class="hero-note">No sign-up required to preview. Create a free account to use it on your own essay.</p>
+</div>
+
+<!-- ═══════════════════════════════════
+     SECTION 1 — ESSAY STUDIO PREVIEW
+════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label">Step 1 <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;">Essay Studio</span></div>
+  <h2 class="section-title">Watch LP coach a real essay.</h2>
+  <p class="section-sub">This is a real student essay. The AI finds the exact issues that get applications rejected — in seconds.</p>
+
+  <div class="mock" id="essay-mock">
+    <div class="mock-bar">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+      <div class="mock-title">Essay Studio — LP Coaching Panel</div>
+      <!-- Live status badge -->
+      <div id="essay-status" style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#fde68a;letter-spacing:.06em;">DEMO MODE</div>
+    </div>
+    <div class="mock-body">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <!-- Step 1 btn -->
+        <div id="step1btn" style="padding:7px 14px;border-radius:10px;font-size:11px;font-weight:700;cursor:default;background:rgba(34,211,238,.15);border:1px solid rgba(34,211,238,.4);color:#cffafe;">
+          Step 1: Strategy Review
+        </div>
+        <div id="step2btn" class="step2-btn">Step 2: Final Polish</div>
+        <div id="wc-display" style="margin-left:auto;font-size:10px;color:var(--muted);">Words: 0 / 650</div>
+      </div>
+      <div class="essay-grid">
+        <!-- Left: essay text -->
+        <div>
+          <div id="essay-display" class="essay-textarea">
+            <span id="essay-text-el" style="white-space:pre-wrap;"></span><span id="cursor" style="color:var(--cyan);animation:blink 1s step-end infinite;">|</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-row">
+              <span style="color:var(--muted);">Readiness Score</span>
+              <span id="score-num" style="color:var(--cyan);font-weight:700;">0/100</span>
+            </div>
+            <div class="score-track"><div class="score-fill" id="score-fill"></div></div>
+            <div style="font-size:10px;color:var(--muted);margin-top:3px;">Target: 80+ · Structure · Clarity · Voice · Specificity</div>
+          </div>
+          <!-- Before/After polish result -->
+          <div id="polish-result" style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease;">
+            <div style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.02);">
+              <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Before</div>
+              <div style="font-size:10px;color:#94a3b8;line-height:1.5;">The sweltering heat of mid-August beat down as I stood before the skeleton of what would become a community library…</div>
+              <div style="margin-top:6px;font-size:9px;font-weight:700;color:#f87171;">Score: 68 / 100</div>
+            </div>
+            <div style="padding:10px 12px;border-radius:12px;border:1px solid rgba(34,211,238,.25);background:rgba(34,211,238,.04);">
+              <div style="font-size:9px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">After — Final Polish ✓</div>
+              <div style="font-size:10px;color:#e2e8f0;line-height:1.5;">Six weeks ago I was handed a hammer for the first time — calloused hands I never expected to earn. I chose to volunteer, spending six weeks building something that matters…</div>
+              <div style="margin-top:6px;font-size:9px;font-weight:700;color:#86efac;">Score: 80 / 100 · +12 pts</div>
+            </div>
+          </div>
+        </div>
+        <!-- Right: coaching panel -->
+        <div>
+          <div class="score-hero">
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Admissions Strength</div>
+            <div class="score-big" id="score-big">0</div>
+            <div class="score-label">/100</div>
+            <div class="score-delta" id="score-delta" style="opacity:0;">Analyzing…</div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">LP Issue Map</div>
+          <div class="issue-list" id="issue-list"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Gate overlay -->
+    <div class="gate" id="essay-gate">
+      <div class="gate-title">Your essay. Your score.</div>
+      <div class="gate-sub">Create a free account to run this analysis on your own essay draft — and see exactly what to fix.</div>
+      <a href="student-profile.html" class="gate-btn">Analyze My Essay →</a>
+      <div class="gate-note">Free to start · No credit card required</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span>Next</span></div>
+
+<!-- ═══════════════════════════════════
+     SECTION 2 — COLLEGE MATCH PREVIEW
+════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label">Step 2 <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;">College Match</span></div>
+  <h2 class="section-title">See your college list — instantly.</h2>
+  <p class="section-sub">A 3.4 GPA and 1320 SAT. Watch the engine build a balanced Safety / Target / Reach list in real time.</p>
+
+  <div class="mock" id="cm-mock">
+    <div class="mock-bar">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+      <div class="mock-title">College Match — LaunchPath AI</div>
+    </div>
+    <div class="mock-body">
+      <!-- Input row — preset, non-editable -->
+      <div class="cm-inputs">
+        <div class="cm-field">
+          <label>GPA (unweighted)</label>
+          <input class="cm-input" id="cm-gpa" value="" readonly/>
+        </div>
+        <div class="cm-field">
+          <label>SAT Score</label>
+          <input class="cm-input" id="cm-sat" value="" readonly/>
+        </div>
+        <div class="cm-field" style="align-self:flex-end;">
+          <button class="cm-btn" id="cm-btn" onclick="runCollegeMatch()">Show My Matches →</button>
+        </div>
+        <div id="cm-tags" style="margin-left:auto;display:flex;gap:6px;align-items:center;opacity:0;transition:opacity .4s ease;">
+          <span style="padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;">2 Safety</span>
+          <span style="padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.3);color:#fde68a;">3 Target</span>
+          <span style="padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5;">1 Reach</span>
+        </div>
+      </div>
+      <!-- Cards -->
+      <div class="college-cards" id="cm-cards">
+        <div class="c-card safety" id="cm-c0">
+          <div class="c-tag safety">Safety</div>
+          <div class="c-name">Arizona State University</div>
+          <div class="c-stat">GPA 3.0–3.6 · SAT 1110–1330<br/>~85% acceptance</div>
+          <div class="c-fit">● Fit 92%</div>
+        </div>
+        <div class="c-card safety" id="cm-c1">
+          <div class="c-tag safety">Safety</div>
+          <div class="c-name">Temple University</div>
+          <div class="c-stat">GPA 3.1–3.6 · SAT 1140–1340<br/>~80% acceptance</div>
+          <div class="c-fit">● Fit 88%</div>
+        </div>
+        <div class="c-card target" id="cm-c2">
+          <div class="c-tag target">Target</div>
+          <div class="c-name">Penn State University</div>
+          <div class="c-stat">GPA 3.3–3.8 · SAT 1160–1360<br/>~50% acceptance</div>
+          <div class="c-fit">● Fit 84%</div>
+        </div>
+        <div class="c-card target" id="cm-c3">
+          <div class="c-tag target">Target</div>
+          <div class="c-name">Rutgers University</div>
+          <div class="c-stat">GPA 3.3–3.7 · SAT 1230–1420<br/>~62% acceptance</div>
+          <div class="c-fit">● Fit 81%</div>
+        </div>
+        <div class="c-card target" id="cm-c4">
+          <div class="c-tag target">Target</div>
+          <div class="c-name">University of Connecticut</div>
+          <div class="c-stat">GPA 3.2–3.8 · SAT 1200–1390<br/>~54% acceptance</div>
+          <div class="c-fit">● Fit 79%</div>
+        </div>
+        <div class="c-card reach" id="cm-c5">
+          <div class="c-tag reach">Reach</div>
+          <div class="c-name">University of Maryland</div>
+          <div class="c-stat">GPA 3.7–4.0 · SAT 1310–1480<br/>~44% acceptance</div>
+          <div class="c-fit">● Fit 68%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Gate overlay -->
+    <div class="gate" id="cm-gate">
+      <div class="gate-title">Your full list. Your future.</div>
+      <div class="gate-sub">Create a free account to enter your real stats, run What-If scenarios, and build your complete balanced college list.</div>
+      <a href="student-profile.html" class="gate-btn">Build My College List →</a>
+      <div class="gate-note">Free to start · No credit card required</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER STRIP -->
+<div class="footer-strip">
+  <p>Ready to use LaunchPath AI on your own essays and college list?</p>
+  <a href="student-profile.html" class="footer-cta">Get Started — It's Free →</a>
+  <div style="margin-top:14px;font-size:12px;color:var(--muted);">
+    <a href="index.html" style="color:var(--muted);text-decoration:none;margin:0 10px;">← Back to home</a>
+    <a href="student-login.html" style="color:var(--muted);text-decoration:none;margin:0 10px;">Sign In</a>
+  </div>
+</div>
+
+<style>@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}</style>
+
+<script>
+// ── ESSAY TEXT ────────────────────────────────────────────────────────
+const ESSAY = "The sweltering heat of mid-August beat down as I stood before the skeleton of what would become a community library. As a volunteer for Habitat for Humanity, I spent six weeks immersed in the rhythm of hammers and saws. To an outsider it was a construction site; to me, it was a manifestation of my desire to understand structural integrity. In conclusion, this experience taught me that leadership is not about the volume of one's voice, but the clarity of one's vision.";
+
+const ISSUES = [
+  { sev:"warn", cls:"warn", type:"Hook · Sentence 1", why:"Weak opener. Start with a specific moment or action to hook the reader." },
+  { sev:"warn", cls:"warn", type:"Cliché · Sentence 4", why:'"In conclusion" — admissions readers flag this immediately.' },
+  { sev:"amber", cls:"amber", type:"Voice · Sentence 2", why:"Passive construction. Rewrite in active voice — who did what?" },
+  { sev:"amber", cls:"amber", type:"Specificity · Sentence 3", why:"Vague language. Add a concrete detail — name, number, or outcome." },
+];
+
+// Highlight map: sentence index → issue class
+const HIGHLIGHTS = {0:"sev-warn", 1:"sev-amber", 2:"sev-amber", 3:"sev-warn"};
+
+let essayDone = false;
+
+function buildHighlightedEssay() {
+  const sents = ESSAY.split(/(?<=[.!?])\s+/);
+  return sents.map((s, i) => {
+    const cls = HIGHLIGHTS[i];
+    if (cls) return `<mark class="${cls}">${s}</mark>`;
+    return s;
+  }).join(' ');
+}
+
+function animateScore(target, duration, onDone) {
+  let n = 0;
+  const fill = document.getElementById('score-fill');
+  const num = document.getElementById('score-num');
+  const big = document.getElementById('score-big');
+  const step = () => {
+    n = Math.min(n + 1, target);
+    if (fill) fill.style.width = n + '%';
+    if (num) num.textContent = n + '/100';
+    if (big) big.textContent = n;
+    if (n < target) setTimeout(step, duration / target);
+    else if (onDone) onDone();
+  };
+  step();
+}
+
+const REWRITES = [
+  "Six weeks ago I was handed a hammer for the first time — calloused hands I never expected to earn.",
+  "I chose to volunteer, spending six weeks immersed in the rhythm of hammers and saws.",
+  "To an outsider it was a construction site; to me, it was where I first understood what it means to build something that matters.",
+  "That summer taught me leadership lives in the clarity of one's vision — not the volume of one's voice.",
+];
+
+let replacedCount = 0;
+
+function showIssue(idx) {
+  const list = document.getElementById('issue-list');
+  if (!list || idx >= ISSUES.length) return;
+  const it = ISSUES[idx];
+  const div = document.createElement('div');
+  div.id = `issue-${idx}`;
+  div.className = `issue-item ${it.cls}`;
+  div.innerHTML = `
+    <div class="pill ${it.cls}">${it.sev === 'warn' ? 'Warning' : 'Amber'}</div>
+    <div style="flex:1;">
+      <div class="issue-type">${it.type}</div>
+      <div class="issue-why">${it.why}</div>
+      <button class="replace-btn" id="rbtn-${idx}" onclick="replaceIssue(${idx})">Replace sentence →</button>
+    </div>`;
+  list.appendChild(div);
+  requestAnimationFrame(() => requestAnimationFrame(() => div.classList.add('show')));
+}
+
+function replaceIssue(idx) {
+  const btn = document.getElementById('rbtn-' + idx);
+  if (!btn || btn.classList.contains('replaced')) return;
+  btn.textContent = 'Replacing…';
+  // Flash the highlight in essay
+  const marks = document.querySelectorAll('.essay-textarea mark');
+  if (marks[idx]) {
+    marks[idx].style.transition = 'background .3s';
+    marks[idx].style.background = 'rgba(34,211,238,.2)';
+    marks[idx].style.borderBottomColor = 'rgba(34,211,238,.6)';
+    setTimeout(() => { marks[idx].style.background = ''; marks[idx].style.borderBottomColor = ''; }, 800);
+  }
+  setTimeout(() => {
+    btn.textContent = '✓ Replaced';
+    btn.classList.add('replaced');
+    replacedCount++;
+    // After 2 replacements, unlock Step 2
+    if (replacedCount >= 2) {
+      setTimeout(() => {
+        const s2 = document.getElementById('step2btn');
+        if (s2) {
+          s2.classList.add('ready');
+          s2.textContent = 'Step 2: Final Polish ✦';
+          // Auto-click Step 2 after 1.5s
+          setTimeout(() => runStep2Polish(), 1500);
+        }
+      }, 400);
+    }
+  }, 600);
+}
+
+function autoReplace(idx) {
+  // Simulate button being clicked — pulse effect on the button first
+  const btn = document.getElementById('rbtn-' + idx);
+  if (!btn) return;
+  btn.style.transform = 'scale(.95)';
+  btn.style.background = 'rgba(34,211,238,.2)';
+  setTimeout(() => {
+    btn.style.transform = '';
+    replaceIssue(idx);
+  }, 200);
+}
+
+// ── ESSAY ANIMATION ───────────────────────────────────────────────────
+function runEssayPreview() {
+  const el = document.getElementById('essay-text-el');
+  const cursor = document.getElementById('cursor');
+  const wc = document.getElementById('wc-display');
+  const btn = document.getElementById('step1btn');
+  const delta = document.getElementById('score-delta');
+
+  // Stream essay text
+  let i = 0;
+  const chunk = 5;
+  const stream = setInterval(() => {
+    i = Math.min(i + chunk, ESSAY.length);
+    el.textContent = ESSAY.slice(0, i);
+    const words = ESSAY.slice(0, i).trim().split(/\s+/).filter(Boolean).length;
+    if (wc) wc.textContent = 'Words: ' + words + ' / 650';
+    if (i >= ESSAY.length) {
+      clearInterval(stream);
+      cursor.style.display = 'none';
+      essayDone = true;
+      // Step 1 click effect
+      setTimeout(() => {
+        btn.style.background = 'rgba(34,211,238,.3)';
+        btn.style.transform = 'scale(.97)';
+        setTimeout(() => {
+          btn.style.transform = '';
+          btn.textContent = 'Analyzing…';
+          // Switch to highlighted view
+          setTimeout(() => {
+            el.innerHTML = buildHighlightedEssay();
+            cursor.style.display = 'none';
+            // Animate score
+            setTimeout(() => {
+              if (delta) { delta.style.opacity = '1'; delta.textContent = 'Scoring essay…'; }
+              animateScore(68, 1800, () => {
+                if (delta) delta.textContent = '68 / 100 · Target: 80+';
+                btn.textContent = 'Step 1: Strategy Review';
+                btn.style.background = 'rgba(255,255,255,.06)';
+                btn.style.color = 'var(--muted)';
+              });
+            }, 300);
+            // Show issues staggered
+            ISSUES.forEach((_, idx) => {
+              setTimeout(() => showIssue(idx), 800 + idx * 400);
+            });
+            // Auto-replace first 2 issues to trigger Step 2
+            setTimeout(() => autoReplace(0), 800 + ISSUES.length * 400 + 600);
+            setTimeout(() => autoReplace(1), 800 + ISSUES.length * 400 + 1800);
+          }, 600);
+        }, 300);
+      }, 800);
+    }
+  }, 18);
+}
+
+// ── STEP 2 POLISH ANIMATION ──────────────────────────────────────────
+function runStep2Polish() {
+  const s2 = document.getElementById('step2btn');
+  const big = document.getElementById('score-big');
+  const fill = document.getElementById('score-fill');
+  const num = document.getElementById('score-num');
+  const delta = document.getElementById('score-delta');
+
+  if (!s2) return;
+
+  // Click animation
+  s2.classList.add('clicking');
+  setTimeout(() => {
+    s2.classList.remove('clicking');
+    s2.textContent = 'Polishing…';
+    s2.style.background = 'rgba(34,211,238,.15)';
+    s2.style.color = '#a5f3fc';
+    s2.style.border = '1px solid rgba(34,211,238,.3)';
+
+    // Score animates from 68 → 80
+    setTimeout(() => {
+      let n = 68, target = 80;
+      if (delta) { delta.style.opacity = '1'; delta.textContent = 'Applying polish…'; }
+      const step = () => {
+        n = Math.min(n + 1, target);
+        if (fill) fill.style.width = n + '%';
+        if (num) num.textContent = n + '/100';
+        if (big) {
+          big.textContent = n;
+          big.style.textShadow = `0 0 ${(n-68)*4}px rgba(34,211,238,.6)`;
+        }
+        if (n < target) setTimeout(step, 60);
+        else {
+          // Polish complete
+          if (delta) delta.textContent = '+12 point improvement ✦';
+          if (delta) delta.style.color = '#86efac';
+          s2.textContent = 'Step 2: Final Polish ✓';
+          s2.style.background = 'rgba(34,197,94,.12)';
+          s2.style.color = '#86efac';
+          s2.style.border = '1px solid rgba(34,197,94,.3)';
+          // Show before/after panel
+          setTimeout(() => showPolishResult(), 500);
+          // Show gate after before/after is visible
+          setTimeout(() => {
+            document.getElementById('essay-gate').classList.add('show');
+          }, 3000);
+        }
+      };
+      step();
+    }, 800);
+  }, 200);
+}
+
+// ── SHOW BEFORE/AFTER POLISH RESULT ─────────────────────────────────
+function showPolishResult() {
+  const panel = document.getElementById('polish-result');
+  if (panel) {
+    panel.style.opacity = '1';
+    panel.style.transform = 'translateY(0)';
+  }
+}
+
+// ── COLLEGE MATCH ─────────────────────────────────────────────────────
+function typeInto(id, val, cb) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let i = 0;
+  const t = setInterval(() => {
+    i++;
+    el.value = val.slice(0, i);
+    if (i >= val.length) { clearInterval(t); if (cb) cb(); }
+  }, 120);
+}
+
+function runCollegeMatch() {
+  const btn = document.getElementById('cm-btn');
+  if (!btn || !btn.classList.contains('active')) return;
+  btn.textContent = 'Finding matches…';
+  btn.style.opacity = '.7';
+  btn.onclick = null;
+
+  setTimeout(() => {
+    // Show count tags
+    const tags = document.getElementById('cm-tags');
+    if (tags) tags.style.opacity = '1';
+    // Show cards staggered
+    for (let i = 0; i < 6; i++) {
+      setTimeout(() => {
+        const card = document.getElementById('cm-c' + i);
+        if (card) card.classList.add('show');
+      }, i * 220);
+    }
+    btn.textContent = 'Matches found ✓';
+    // Gate after cards load
+    setTimeout(() => {
+      document.getElementById('cm-gate').classList.add('show');
+    }, 6 * 220 + 2200);
+  }, 700);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  // Auto-start essay preview after short delay
+  setTimeout(runEssayPreview, 800);
+
+  // Type in College Match preset values after essay is running
+  setTimeout(() => {
+    typeInto('cm-gpa', '3.4', () => {
+      setTimeout(() => {
+        typeInto('cm-sat', '1320', () => {
+          // Activate button
+          const btn = document.getElementById('cm-btn');
+          if (btn) btn.classList.add('active');
+        });
+      }, 400);
+    });
+  }, 3000);
+});
+</script>
+
+<!-- Protection -->
+<style id="lp-protect">
+  html,body,*{-webkit-user-select:none!important;-moz-user-select:none!important;user-select:none!important;}
+  img{-webkit-user-drag:none;pointer-events:none;}
+  @media print{body{display:none!important;}}
+</style>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+  document.addEventListener('keydown',function(e){
+    var k=e.key?e.key.toLowerCase():'',c=e.ctrlKey||e.metaKey;
+    if(c&&['s','p','a','c','u'].includes(k)){e.preventDefault();return false;}
+    if(k==='printscreen'||k==='f12'){e.preventDefault();return false;}
+    if(c&&e.shiftKey&&['i','j','c'].includes(k)){e.preventDefault();return false;}
+  });
+  document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
+})();
+</script>
+
+</body>
+</html>
